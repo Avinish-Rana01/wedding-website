@@ -1,80 +1,127 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { weddingData } from '../../data/weddingData'
 import './Envelope.css'
 
 /**
- * Envelope.jsx — 3D Interactive Royal Envelope Opening Experience
- * Refined for Phase 3: Haute couture stationery, enhanced lighting depth,
- * and preparation for transition into the full wedding website.
+ * Finite animation states for predictable envelope lifecycle
  */
-export default function Envelope({ onOpenStateChange, onExplore }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isOpening, setIsOpening] = useState(false)
+const STATUS = {
+  CLOSED: 'closed',
+  OPENING: 'opening',
+  OPEN: 'open',
+}
+
+/**
+ * Envelope.jsx — 3D Interactive Royal Wedding Envelope
+ * Audited & Refactored: Single authoritative trigger, immediate sync guard,
+ * strict timer cancellation, semantic heading hierarchy, and zero dead actions.
+ */
+export default function Envelope({ onOpenStateChange }) {
+  const [status, setStatus] = useState(STATUS.CLOSED)
   const [isBursting, setIsBursting] = useState(false)
 
-  const handleOpen = () => {
-    if (isOpen || isOpening) return
+  // Immediate synchronous guard preventing race conditions / double bubbling
+  const isActionPendingRef = useRef(false)
+  const timersRef = useRef([])
 
-    setIsOpening(true)
+  const clearAllTimers = useCallback(() => {
+    timersRef.current.forEach((id) => clearTimeout(id))
+    timersRef.current = []
+  }, [])
+
+  // Clean up all timers on unmount
+  useEffect(() => {
+    return () => {
+      clearAllTimers()
+    }
+  }, [clearAllTimers])
+
+  const safeTimeout = useCallback((callback, delay) => {
+    const id = setTimeout(() => {
+      timersRef.current = timersRef.current.filter((tId) => tId !== id)
+      callback()
+    }, delay)
+    timersRef.current.push(id)
+    return id
+  }, [])
+
+  const handleOpen = useCallback((e) => {
+    if (e && typeof e.stopPropagation === 'function') {
+      e.stopPropagation()
+    }
+
+    // Synchronous guard
+    if (isActionPendingRef.current || status !== STATUS.CLOSED) return
+    isActionPendingRef.current = true
+
+    // Step 1: Wax seal breaks and top flap begins folding backward (0ms)
+    setStatus(STATUS.OPENING)
     if (onOpenStateChange) {
       onOpenStateChange({ isOpening: true, isOpen: false, isBursting: false })
     }
 
-    // Step 1: Wax seal crack & release (0ms)
-    // Step 2: 3D flap unfolds backward, rays burst, card emerges (180ms)
-    setTimeout(() => {
-      setIsOpen(true)
+    // Step 2: Golden rays ignite as flap clears opening (320ms)
+    safeTimeout(() => {
       setIsBursting(true)
+      if (onOpenStateChange) {
+        onOpenStateChange({ isOpening: true, isOpen: false, isBursting: true })
+      }
+    }, 320)
+
+    // Step 3: Top flap is fully folded behind back plate; card ascends (480ms)
+    safeTimeout(() => {
+      setStatus(STATUS.OPEN)
       if (onOpenStateChange) {
         onOpenStateChange({ isOpening: false, isOpen: true, isBursting: true })
       }
-    }, 180)
+    }, 480)
 
-    // Step 3: Burst settles into ambient golden backlight behind the card (1300ms)
-    setTimeout(() => {
+    // Step 4: Burst settles into ambient golden aura behind emerged card (1500ms)
+    safeTimeout(() => {
       setIsBursting(false)
-      setIsOpening(false)
+      isActionPendingRef.current = false
       if (onOpenStateChange) {
         onOpenStateChange({ isOpening: false, isOpen: true, isBursting: false })
       }
-    }, 1300)
-  }
+    }, 1500)
+  }, [status, onOpenStateChange, safeTimeout])
 
-  const handleReset = (e) => {
-    e.stopPropagation()
-    setIsOpen(false)
-    setIsOpening(false)
+  const handleReset = useCallback((e) => {
+    if (e && typeof e.stopPropagation === 'function') {
+      e.stopPropagation()
+    }
+
+    clearAllTimers()
+    isActionPendingRef.current = false
+    setStatus(STATUS.CLOSED)
     setIsBursting(false)
+
     if (onOpenStateChange) {
       onOpenStateChange({ isOpening: false, isOpen: false, isBursting: false })
     }
-  }
+  }, [clearAllTimers, onOpenStateChange])
 
-  const handleKeyDown = (e) => {
-    if ((e.key === 'Enter' || e.key === ' ') && !isOpen && !isOpening) {
-      e.preventDefault()
-      handleOpen()
+  const handleEnvelopeClick = (e) => {
+    // Only open if clicked while closed and action not already pending
+    if (status === STATUS.CLOSED && !isActionPendingRef.current) {
+      handleOpen(e)
     }
   }
 
-  const handleExploreClick = (e) => {
-    e.stopPropagation()
-    if (onExplore) {
-      onExplore()
-    }
-  }
+  const isOpen = status === STATUS.OPEN
+  const isOpening = status === STATUS.OPENING
 
   return (
-    <main className="envelope-scene" aria-label="Wedding Invitation Envelope">
+    <main className="envelope-scene" aria-label="Wedding Invitation Envelope Experience">
       {/* Subtle Rotating Damask / Sacred Geometry Watermark */}
       <div className="scene-watermark" aria-hidden="true" />
 
       {/* Header Guidance (Fades out gracefully once the envelope opens) */}
       <header className={`scene-header ${isOpen ? 'hidden-state' : ''}`}>
         <div className="scene-title-badge">
-          <span className="ornament-bullet">✦</span>
+          <span className="ornament-bullet" aria-hidden="true">✦</span>
           <span>{weddingData.general.instructionOpen}</span>
-          <span className="ornament-bullet">✦</span>
+          <span className="ornament-bullet" aria-hidden="true">✦</span>
         </div>
         <p className="scene-instruction">
           <span className="pulse-dot" aria-hidden="true" />
@@ -82,15 +129,10 @@ export default function Envelope({ onOpenStateChange, onExplore }) {
         </p>
       </header>
 
-      {/* 3D Envelope Container */}
+      {/* 3D Envelope Container (Pure scene container with optional surface tap) */}
       <div
         className={`envelope-wrapper ${isOpen ? 'is-open' : 'idle-state'} ${isOpening ? 'is-opening' : ''}`}
-        onClick={!isOpen ? handleOpen : undefined}
-        onKeyDown={handleKeyDown}
-        role="button"
-        tabIndex={!isOpen ? 0 : -1}
-        aria-label="Open wedding invitation for Prachi and Sumit"
-        aria-expanded={isOpen}
+        onClick={handleEnvelopeClick}
       >
         <div className="envelope-box">
           {/* Layer 1: Envelope Back Plate with Inner Silk Lining */}
@@ -99,7 +141,10 @@ export default function Envelope({ onOpenStateChange, onExplore }) {
           </div>
 
           {/* Layer 2: Radiant Golden Light Rays Burst & Ambient Backlight */}
-          <div className={`light-rays-burst ${isBursting ? 'active-burst' : ''} ${isOpen ? 'settled-glow' : ''}`} aria-hidden="true">
+          <div
+            className={`light-rays-burst ${isBursting ? 'active-burst' : ''} ${isOpen ? 'settled-glow' : ''}`}
+            aria-hidden="true"
+          >
             <div className="light-rays-core" />
             <div className="light-beam beam-1" />
             <div className="light-beam beam-2" />
@@ -109,7 +154,7 @@ export default function Envelope({ onOpenStateChange, onExplore }) {
             <div className="light-beam beam-6" />
           </div>
 
-          {/* Soft ambient back aura behind card when emerged */}
+          {/* Soft ambient backlight behind card when emerged */}
           <div className={`card-ambient-halo ${isOpen ? 'halo-visible' : ''}`} aria-hidden="true" />
 
           {/* Layer 3: The Rising Royal Invitation Card */}
@@ -126,8 +171,12 @@ export default function Envelope({ onOpenStateChange, onExplore }) {
               {/* Card Stationery Typography & Sacred Announcements */}
               <div className="card-content">
                 {/* Auspicious Invocation Header */}
-                <p className="card-invocation">{weddingData.general.invocation}</p>
-                <p className="card-invocation-sub">{weddingData.general.invocationSub}</p>
+                {weddingData.general.showInvocation && (
+                  <>
+                    <p className="card-invocation" lang="sa">{weddingData.general.invocation}</p>
+                    <p className="card-invocation-sub">{weddingData.general.invocationSub}</p>
+                  </>
+                )}
 
                 {/* Restrained P & S Monogram Seal Motif */}
                 <div className="card-monogram-crest" aria-hidden="true">
@@ -145,38 +194,29 @@ export default function Envelope({ onOpenStateChange, onExplore }) {
                 <p className="card-greeting">{weddingData.general.invitationGreeting}</p>
                 <p className="card-plea">{weddingData.general.invitationPlea}</p>
 
-                {/* Couple Names (High Contrast Gold Foil Typography) */}
-                <div className="card-couple-block">
-                  <h1 className="couple-name">{weddingData.couple.bride.firstName}</h1>
+                {/* Single Semantic H1 for Couple Names (High Contrast Gold Foil) */}
+                <h1 className="card-couple-heading">
+                  <span className="couple-name">{weddingData.couple.bride.firstName}</span>
                   <span className="couple-ampersand" aria-hidden="true">&amp;</span>
-                  <h1 className="couple-name">{weddingData.couple.groom.firstName}</h1>
-                </div>
+                  <span className="couple-name">{weddingData.couple.groom.firstName}</span>
+                </h1>
 
-                {/* Subtitle / Tagline */}
+                {/* Tagline */}
                 <p className="card-tagline">{weddingData.general.tagline}</p>
 
-                {/* Save The Date Badge */}
+                {/* Save The Date Ribbon */}
                 <div className="card-save-date-badge">
-                  <span>{weddingData.general.saveTheDate} • {weddingData.couple.hashtag}</span>
+                  <span>Save the Date • Celebrations Ahead</span>
                 </div>
 
-                {/* Invitation Action Buttons (Prepared for full site transition) */}
+                {/* Card Action Controls: Clean, functional replay action */}
                 <div className="card-actions-row">
-                  <button
-                    type="button"
-                    className="card-explore-btn"
-                    onClick={handleExploreClick}
-                    aria-label="Explore wedding celebration details"
-                  >
-                    <span>{weddingData.general.instructionExplore}</span>
-                    <span className="btn-arrow" aria-hidden="true">▾</span>
-                  </button>
-
                   <button
                     type="button"
                     className="card-replay-btn"
                     onClick={handleReset}
                     aria-label="Fold and close invitation envelope"
+                    tabIndex={isOpen ? 0 : -1}
                   >
                     <span className="replay-icon" aria-hidden="true">↺</span>
                     <span>{weddingData.general.instructionReplay}</span>
@@ -196,16 +236,18 @@ export default function Envelope({ onOpenStateChange, onExplore }) {
             <div className="envelope-flap-outer">
               <div className="flap-edge-gold" />
             </div>
-            <div className="envelope-flap-inner" />
           </div>
 
-          {/* Layer 6: Golden Wax Seal with 'P & S' Monogram */}
-          <div className={`wax-seal-wrapper ${isOpening ? 'releasing-seal' : ''} ${isOpen ? 'broken-seal' : ''}`}>
+          {/* Layer 6: Golden Wax Seal (Authoritative focusable accessible button) */}
+          <div
+            className={`wax-seal-wrapper ${isOpening ? 'releasing-seal' : ''} ${isOpen ? 'broken-seal' : ''}`}
+          >
             <button
               type="button"
               className="wax-seal-btn"
               onClick={handleOpen}
-              aria-label="Break wax seal and open invitation"
+              aria-label="Break golden wax seal and open invitation for Prachi and Sumit"
+              aria-expanded={isOpen}
               tabIndex={!isOpen ? 0 : -1}
             >
               <div className="seal-rim-beads" aria-hidden="true" />

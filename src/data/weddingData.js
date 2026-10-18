@@ -1,7 +1,7 @@
 /**
  * weddingData.js — Single Source of Truth for Wedding Content
  * Follows WEDDING_CONTENT.md and AGENTS.md rules.
- * All unconfirmed fields strictly use '__' as a placeholder.
+ * All unconfirmed fields strictly use '__' or are cleanly hidden from display.
  */
 
 export const weddingData = {
@@ -21,18 +21,15 @@ export const weddingData = {
   },
   general: {
     heading: "WEDDING INVITATION",
+    showInvocation: true,
     invocation: "॥ श्री गणेशाय नमः ॥",
     invocationSub: "Om Shri Ganeshaya Namah",
     invitationGreeting: "Together with their families",
-    invitationPlea: "Request the pleasure of your gracious presence and blessings to celebrate the wedding festivities of",
+    invitationPlea: "Request the honour of your presence and blessings to celebrate the wedding festivities of",
     tagline: "Celebrating Love, Tradition & Auspicious Beginnings",
-    saveTheDate: "Save the Date",
-    datePlaceholder: "__",
-    cityPlaceholder: "__",
     instructionOpen: "An Invitation for You",
     instructionTap: "Tap to Open",
-    instructionExplore: "Explore Celebrations",
-    instructionReplay: "Fold & Close Envelope",
+    instructionReplay: "Fold & Close Invitation",
   },
   events: [
     {

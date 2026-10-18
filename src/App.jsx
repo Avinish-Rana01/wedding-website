@@ -1,35 +1,25 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import Envelope from './components/Envelope/Envelope'
 import Particles from './components/Particles/Particles'
 
 /**
  * App.jsx — Wedding Invitation Experience for Prachi & Sumit
- * Phase 2: Cinematic 3D Envelope Opening Ritual
+ * Synchronized particle burst and 3D envelope opening.
  */
 function App() {
-  const [burstState, setBurstState] = useState(false)
+  const [isBursting, setIsBursting] = useState(false)
 
-  const handleOpenStateChange = ({ isBursting }) => {
-    if (isBursting) {
-      setBurstState(true)
-      // Reset burst trigger after particles spawn
-      setTimeout(() => setBurstState(false), 500)
-    }
-  }
-
-  const handleExplore = () => {
-    // Prepared for Phase 4: Smooth transition into the full wedding website & itinerary
-    const event = new CustomEvent('wedding:explore')
-    window.dispatchEvent(event)
-  }
+  const handleOpenStateChange = useCallback(({ isBursting: bursting }) => {
+    setIsBursting(Boolean(bursting))
+  }, [])
 
   return (
     <>
       {/* Golden Ambient and Burst Particles */}
-      <Particles triggerBurst={burstState} burstOrigin={{ x: 0.5, y: 0.52 }} />
+      <Particles triggerBurst={isBursting} />
 
       {/* 3D Envelope Scene */}
-      <Envelope onOpenStateChange={handleOpenStateChange} onExplore={handleExplore} />
+      <Envelope onOpenStateChange={handleOpenStateChange} />
     </>
   )
 }
