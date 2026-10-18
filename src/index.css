@@ -1,111 +1,119 @@
+/* ==========================================================================
+   Royal Indian Luxury Design System — Prachi & Sumit Wedding
+   ========================================================================== */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* --- Heritage Velvet & Crimson Spectrum --- */
+  --color-royal-crimson: #5c0618;
+  --color-burgundy-deep: #38030e;
+  --color-night-maroon: #1c0106;
+  --color-maroon-glow: rgba(92, 6, 24, 0.4);
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* --- 24K Metallic Gold Spectrum --- */
+  --color-gold-light: #fbeea4;
+  --color-gold-primary: #d4af37;
+  --color-gold-rich: #c59b27;
+  --color-gold-dark: #8c6d1a;
+  --color-gold-muted: rgba(212, 175, 55, 0.35);
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  --gradient-gold: linear-gradient(135deg, #fbeea4 0%, #d4af37 50%, #aa820a 100%);
+  --gradient-gold-foil: linear-gradient(
+    45deg,
+    #c59b27 0%,
+    #fbeea4 25%,
+    #d4af37 50%,
+    #fef3c7 75%,
+    #aa820a 100%
+  );
+  --gradient-royal-bg: radial-gradient(
+    ellipse at center,
+    #4a0614 0%,
+    #30030c 45%,
+    #170105 100%
+  );
+
+  /* --- Parchment & Ivory Stationery Tones --- */
+  --color-paper-light: #fffefa;
+  --color-paper-warm: #faf5eb;
+  --color-paper-border: #e6d7bc;
+  --color-paper-gold-rim: #d9bf84;
+  --color-text-dark: #27170f;
+  --color-text-muted: #6b5a50;
+  --color-text-light: #fdf8ed;
+  --color-text-gold: #edd27b;
+
+  /* --- Shadows & Glows --- */
+  --shadow-envelope: 0 25px 60px rgba(0, 0, 0, 0.75), 0 10px 25px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 15px 40px rgba(23, 1, 5, 0.35), 0 5px 15px rgba(212, 175, 55, 0.15);
+  --glow-gold: 0 0 25px rgba(212, 175, 55, 0.5), 0 0 60px rgba(212, 175, 55, 0.25);
+  --glow-seal: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.45);
+
+  /* --- Typography Families --- */
+  --font-display: 'Cinzel Decorative', 'Playfair Display', Georgia, serif;
+  --font-serif: 'Cinzel', Georgia, 'Times New Roman', serif;
+  --font-script: 'Great Vibes', cursive;
+  --font-sans: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* --- Transition Curves --- */
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Global Reset & Box Sizing --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: var(--color-night-maroon);
+  background: var(--gradient-royal-bg);
+  color: var(--color-text-light);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-body {
-  margin: 0;
+  line-height: 1.5;
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+/* --- Interactive Elements & Accessibility --- */
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+button:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 4px;
+}
+
+/* --- Reduced Motion Mode --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
 }
