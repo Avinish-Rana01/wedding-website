@@ -1,510 +1,491 @@
 /* ==========================================================================
-   Envelope.css — Screen 1: 3D Royal Wedding Envelope Opening Ceremony
-   Mobile-First Architecture, Pure CSS Geometry, Heavy Sunlight Rays Burst
+   Envelope.css — Screen 1: Mobile-First Realistic Luxury Cream Envelope
+   Embossed Paper Texture, 3D V-Flap, 24K Gold Wax Seal & Sunlight Burst
    ========================================================================== */
 
-/* --- Scene Stage & Atmospheric Background --- */
-.envelope-scene {
+.mobile-envelope-container {
   position: relative;
   width: 100%;
+  height: 100%;
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(16px, 4vh, 32px) 16px;
   overflow: hidden;
+  background-color: #faf6ed;
   perspective: 1400px;
-  background: radial-gradient(
-    circle at 50% 40%,
-    #4a0614 0%,
-    #2c020a 50%,
-    #140004 100%
-  );
-  animation: sceneFadeIn 0.6s ease-out forwards;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: opacity 0.55s ease-out, transform 0.6s ease-out, filter 0.55s ease-out;
 }
 
-@keyframes sceneFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Idle breathing float */
+.mobile-envelope-container.is-idle {
+  animation: mobileEnvBreathe 5s ease-in-out infinite;
 }
 
-/* Atmospheric Mandala / Sacred Geometry Watermark */
-.scene-watermark {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(92vw, 720px);
-  height: min(92vw, 720px);
-  transform: translate(-50%, -50%);
-  opacity: 0.05;
-  pointer-events: none;
-  background-image: 
-    radial-gradient(circle, transparent 28%, rgba(212, 175, 55, 0.45) 29%, transparent 30%),
-    radial-gradient(circle, transparent 48%, rgba(212, 175, 55, 0.35) 49%, transparent 50%),
-    radial-gradient(circle, transparent 68%, rgba(212, 175, 55, 0.25) 69%, transparent 70%);
-  border-radius: 50%;
-  animation: slowSpin 160s linear infinite;
-  z-index: 1;
+@keyframes mobileEnvBreathe {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.006);
+  }
 }
 
-@keyframes slowSpin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* Header Hint & Guidance */
-.scene-header {
-  position: relative;
-  z-index: 15;
-  text-align: center;
-  margin-bottom: clamp(20px, 4vh, 32px);
-  transition: opacity 0.35s var(--ease-cinematic), transform 0.35s var(--ease-cinematic);
-}
-
-.scene-header.hidden-state {
+/* Envelope dissolving into the golden sunlight burst */
+.mobile-envelope-container.is-dissolving {
   opacity: 0;
-  transform: translateY(-16px);
+  transform: scale(1.06);
+  filter: blur(8px);
   pointer-events: none;
-  visibility: hidden;
 }
 
-.scene-title-badge {
-  display: inline-flex;
+/* --- Inset Gold Foil Border Frame (framing the mobile screen) --- */
+.envelope-outer-frame {
+  position: absolute;
+  inset: 12px;
+  border: 1.5px solid var(--color-gold-rich);
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.envelope-outer-frame::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed rgba(212, 175, 55, 0.45);
+  border-radius: 2px;
+}
+
+.frame-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--color-gold-dark);
+  border-style: solid;
+}
+
+.frame-tl { top: -2px; left: -2px; border-width: 2.5px 0 0 2.5px; }
+.frame-tr { top: -2px; right: -2px; border-width: 2.5px 2.5px 0 0; }
+.frame-bl { bottom: -2px; left: -2px; border-width: 0 0 2.5px 2.5px; }
+.frame-br { bottom: -2px; right: -2px; border-width: 0 2.5px 2.5px 0; }
+
+/* --- Interior Back Cavity (Behind the top flap) --- */
+.envelope-cavity-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 52%;
+  background: linear-gradient(165deg, #eee3ce 0%, #decbb1 100%);
+  overflow: hidden;
+  z-index: 2;
+}
+
+.cavity-gold-lining {
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  background-image: 
+    radial-gradient(circle at 50% 50%, var(--color-gold-rich) 1.5px, transparent 1.5px),
+    repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.25) 0px, rgba(212, 175, 55, 0.25) 1px, transparent 1px, transparent 16px),
+    repeating-linear-gradient(-45deg, rgba(212, 175, 55, 0.25) 0px, rgba(212, 175, 55, 0.25) 1px, transparent 1px, transparent 16px);
+  background-size: 20px 20px, 32px 32px, 32px 32px;
+}
+
+.cavity-card-peek {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  right: 20px;
+  height: 160px;
+  background: #ffffff;
+  border-radius: 6px;
+  border: 1px solid var(--color-gold-rich);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 6px 20px;
-  border-radius: 999px;
-  background: rgba(38, 2, 8, 0.75);
-  border: 1px solid rgba(212, 175, 55, 0.45);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45), inset 0 0 12px rgba(212, 175, 55, 0.18);
+  padding-top: 16px;
+  transition: transform 0.65s var(--ease-cinematic);
+}
+
+.mobile-envelope-container.is-opening .cavity-card-peek {
+  transform: translateY(-20px);
+}
+
+.peek-gold-rim {
+  width: 50%;
+  height: 1.5px;
+  background: var(--gradient-gold);
   margin-bottom: 8px;
 }
 
-.scene-title-badge span {
-  font-family: var(--font-serif);
-  font-size: clamp(0.75rem, 2vw, 0.82rem);
-  letter-spacing: 0.22em;
+.peek-names {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--color-gold-burnished);
   text-transform: uppercase;
-  color: var(--color-gold-light);
 }
 
-.ornament-bullet {
-  color: var(--color-gold-primary);
-  font-size: 0.75rem;
-}
-
-.scene-instruction {
-  font-family: var(--font-sans);
-  font-size: clamp(0.85rem, 2.2vw, 0.95rem);
-  font-weight: 300;
-  letter-spacing: 0.08em;
-  color: #eedcc0;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.pulse-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-gold-light);
-  box-shadow: 0 0 10px var(--color-gold-primary);
-  animation: pulseDot 2s ease-in-out infinite;
-}
-
-@keyframes pulseDot {
-  0%, 100% {
-    opacity: 0.4;
-    transform: scale(0.85);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.3);
-  }
-}
-
-/* --- 3D Envelope Container & Responsive Geometry Tokens --- */
-.envelope-wrapper {
-  --env-w: min(90vw, 420px);
-  --env-h: calc(var(--env-w) * 0.65);
-  --env-half-w: calc(var(--env-w) / 2);
-  --env-half-h: calc(var(--env-h) / 2);
-  --env-flap-h: calc(var(--env-h) * 0.54);
-  --env-bottom-h: calc(var(--env-h) * 0.58);
-
-  position: relative;
-  width: var(--env-w);
-  height: var(--env-h);
-  z-index: 10;
-  transform-style: preserve-3d;
-  cursor: pointer;
-  transition: opacity 0.45s ease-out, transform 0.5s ease-out, filter 0.45s ease-out;
-}
-
-/* Idle floating animation */
-.envelope-wrapper.idle-state {
-  animation: gentleFloat 5s ease-in-out infinite;
-}
-
-@keyframes gentleFloat {
-  0%, 100% {
-    transform: translateY(0px) rotateX(2deg);
-  }
-  50% {
-    transform: translateY(-6px) rotateX(4deg);
-  }
-}
-
-/* Envelope dissolving when sunlight rays explode */
-.envelope-wrapper.is-dissolving {
-  opacity: 0;
-  transform: scale(1.08);
-  filter: blur(6px);
-  pointer-events: none;
-}
-
-/* --- Envelope Box Layers --- */
-.envelope-box {
+/* --- Volumetric Sunlight Rays Burst --- */
+.sunlight-burst {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  transform-style: preserve-3d;
-}
-
-/* Layer 1: Back Plate (Interior of Envelope) */
-.envelope-back {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(145deg, #2a030a 0%, #3e0510 50%, #1f0106 100%);
-  border-radius: 8px;
-  box-shadow: var(--shadow-envelope);
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  overflow: hidden;
-  z-index: 1;
-}
-
-.envelope-back-inner-pattern {
-  position: absolute;
-  inset: 0;
-  opacity: 0.12;
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--color-gold-primary),
-    var(--color-gold-primary) 1px,
-    transparent 1px,
-    transparent 14px
-  );
-}
-
-.envelope-back::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at bottom, rgba(0, 0, 0, 0.75) 0%, transparent 75%);
-  pointer-events: none;
-}
-
-/* --- Layer 2: Radiant Warm Volumetric Sunlight Rays Burst --- */
-.light-rays-burst {
-  position: absolute;
-  top: 50%;
+  top: 48%;
   left: 50%;
-  width: min(96vw, 620px);
-  height: min(96vw, 620px);
+  width: min(100vw, 750px);
+  height: min(100vw, 750px);
   transform: translate(-50%, -50%) scale(0.1);
   pointer-events: none;
-  z-index: 20;
+  z-index: 25;
   opacity: 0;
-  transition: opacity 0.35s ease-out, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.35s ease-out, transform 0.75s cubic-bezier(0.12, 1, 0.24, 1);
 }
 
-.light-rays-burst.active-burst {
+.sunlight-burst.active-burst {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1.85);
-  animation: raySpin 24s linear infinite;
+  transform: translate(-50%, -50%) scale(2.0);
 }
 
-.light-rays-core {
+.sunlight-core-glow {
   position: absolute;
-  inset: 0;
+  inset: 10%;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(255, 255, 235, 1) 0%,
-    rgba(255, 235, 140, 0.95) 22%,
-    rgba(212, 175, 55, 0.75) 45%,
-    rgba(140, 15, 35, 0.4) 65%,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 245, 180, 0.95) 25%,
+    rgba(254, 219, 105, 0.75) 45%,
+    rgba(217, 119, 6, 0.35) 65%,
     transparent 80%
   );
-  filter: blur(14px);
-  box-shadow: 0 0 90px rgba(255, 230, 120, 0.9);
+  filter: blur(16px);
+  box-shadow: 0 0 100px rgba(255, 235, 140, 0.95);
+  animation: corePulse 1.2s ease-in-out infinite alternate;
 }
 
-.light-beam {
+.sunlight-central-flare {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 720px;
-  height: 26px;
-  margin-top: -13px;
-  margin-left: -360px;
+  width: 140px;
+  height: 140px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 60px #ffffff, 0 0 120px #fef0a5;
+  filter: blur(6px);
+}
+
+@keyframes corePulse {
+  from { transform: scale(0.96); opacity: 0.9; }
+  to { transform: scale(1.05); opacity: 1; }
+}
+
+.rays-spokes {
+  position: absolute;
+  inset: 0;
+}
+
+.spokes-layer-1 {
+  animation: raysRotateClockwise 32s linear infinite;
+}
+
+.spokes-layer-2 {
+  animation: raysRotateCounter 24s linear infinite;
+}
+
+@keyframes raysRotateClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes raysRotateCounter {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.ray-beam {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 860px;
+  height: 38px;
+  margin-top: -19px;
+  margin-left: -430px;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 248, 190, 0.88) 50%,
+    rgba(255, 250, 205, 0.75) 48%,
+    rgba(255, 255, 255, 0.92) 50%,
+    rgba(255, 250, 205, 0.75) 52%,
     transparent 100%
   );
   mix-blend-mode: screen;
 }
 
-.beam-1  { transform: rotate(0deg); }
-.beam-2  { transform: rotate(30deg); }
-.beam-3  { transform: rotate(60deg); }
-.beam-4  { transform: rotate(90deg); }
-.beam-5  { transform: rotate(120deg); }
-.beam-6  { transform: rotate(150deg); }
-.beam-7  { transform: rotate(15deg); }
-.beam-8  { transform: rotate(45deg); }
-.beam-9  { transform: rotate(75deg); }
-.beam-10 { transform: rotate(105deg); }
-.beam-11 { transform: rotate(135deg); }
-.beam-12 { transform: rotate(165deg); }
+.r-1  { transform: rotate(0deg); }
+.r-2  { transform: rotate(30deg); }
+.r-3  { transform: rotate(60deg); }
+.r-4  { transform: rotate(90deg); }
+.r-5  { transform: rotate(120deg); }
+.r-6  { transform: rotate(150deg); }
+.r-7  { transform: rotate(15deg); height: 26px; opacity: 0.8; }
+.r-8  { transform: rotate(45deg); height: 26px; opacity: 0.8; }
+.r-9  { transform: rotate(75deg); height: 26px; opacity: 0.8; }
+.r-10 { transform: rotate(105deg); height: 26px; opacity: 0.8; }
+.r-11 { transform: rotate(135deg); height: 26px; opacity: 0.8; }
+.r-12 { transform: rotate(165deg); height: 26px; opacity: 0.8; }
 
-@keyframes raySpin {
-  from { transform: translate(-50%, -50%) scale(1.85) rotate(0deg); }
-  to { transform: translate(-50%, -50%) scale(1.85) rotate(360deg); }
+/* --- Lower Envelope Pocket (Body) --- */
+.envelope-lower-body {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background-color: #faf5eb;
+  background-image: url('/embossed-paper-texture.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-/* --- Layer 3: Envelope Front Triangular Pockets --- */
-.envelope-pocket-left {
+.lower-body-texture {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: var(--env-half-h) 0 var(--env-half-h) var(--env-half-w);
-  border-color: transparent transparent transparent #30030c;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 70%, rgba(255, 255, 255, 0.45) 0%, transparent 70%);
+}
+
+.lower-invitation-copy {
+  position: relative;
   z-index: 5;
-  filter: drop-shadow(2px 0 3px rgba(0, 0, 0, 0.3));
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px clamp(28px, 6vh, 48px) 20px;
 }
 
-.envelope-pocket-right {
+.copy-flourish {
+  font-size: 0.85rem;
+  color: var(--color-gold-rich);
+  letter-spacing: 0.25em;
+  margin-bottom: 6px;
+  filter: drop-shadow(0 1px 2px rgba(212, 175, 55, 0.4));
+}
+
+.copy-invited-badge {
+  font-family: var(--font-serif);
+  font-size: clamp(0.74rem, 2.3vw, 0.84rem);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-gold-burnished);
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9);
+}
+
+.copy-couple-names {
+  font-family: var(--font-script);
+  font-size: clamp(2rem, 6.5vw, 2.5rem);
+  line-height: 1.1;
+  color: #7d1a15;
+  margin-bottom: 12px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.copy-tap-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: clamp(0.74rem, 2vw, 0.82rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #574438;
+  padding: 5px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.hint-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-gold-rich);
+  box-shadow: 0 0 8px var(--color-gold-primary);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 0.4; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+/* --- Top V-Flap (3D Perspective Fold with Realistic Paper Shadow) --- */
+.envelope-flap-3d-wrapper {
   position: absolute;
   top: 0;
-  right: 0;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: var(--env-half-h) var(--env-half-w) var(--env-half-h) 0;
-  border-color: transparent #32040e transparent transparent;
-  z-index: 5;
-  filter: drop-shadow(-2px 0 3px rgba(0, 0, 0, 0.3));
-}
-
-.envelope-pocket-bottom {
-  position: absolute;
-  bottom: 0;
   left: 0;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 var(--env-half-w) var(--env-bottom-h) var(--env-half-w);
-  border-color: transparent transparent #3c0612 transparent;
-  z-index: 6;
-  filter: drop-shadow(0 -3px 5px rgba(0, 0, 0, 0.35));
-}
-
-/* --- Layer 4: 3D Folding Top Flap --- */
-.envelope-flap-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--env-flap-h);
+  width: 100%;
+  height: 48%;
   transform-origin: top center;
   transform-style: preserve-3d;
-  transition: transform 0.65s var(--ease-cinematic), z-index 0.65s step-end;
-  z-index: 8;
+  filter: drop-shadow(0 14px 20px rgba(35, 18, 8, 0.45));
+  transition: transform 0.85s var(--ease-cinematic), z-index 0.85s step-end;
+  z-index: 7;
 }
 
-/* Flap flips backward in 3D perspective and steps behind */
-.envelope-wrapper.is-opening .envelope-flap-container,
-.envelope-wrapper.is-dissolving .envelope-flap-container {
+/* When opening: flap folds upward and flips backward */
+.mobile-envelope-container.is-opening .envelope-flap-3d-wrapper,
+.mobile-envelope-container.is-dissolving .envelope-flap-3d-wrapper {
   transform: rotateX(180deg) translateZ(-4px);
+  filter: drop-shadow(0 -8px 16px rgba(0, 0, 0, 0.3));
   z-index: 1;
-  transition: transform 0.65s var(--ease-cinematic), z-index 0.22s step-start;
+  transition: transform 0.85s var(--ease-cinematic), z-index 0.25s step-start;
 }
 
-/* Outer Face of Top Flap */
-.envelope-flap-outer {
+/* Outer Face: Embossed texture with V-cut pointing to center */
+.flap-face-outer {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: var(--env-flap-h) var(--env-half-w) 0 var(--env-half-w);
-  border-color: #4c0717 transparent transparent transparent;
+  inset: 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background-color: #faf5eb;
+  background-image: url('/embossed-paper-texture.jpg');
+  background-size: cover;
+  background-position: center top;
   backface-visibility: hidden;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.45));
 }
 
-.flap-edge-gold {
+.flap-border-svg {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
+  width: 100%;
   height: 100%;
   pointer-events: none;
+  filter: drop-shadow(0 1px 3px rgba(212, 175, 55, 0.5));
 }
 
-.flap-edge-gold::before,
-.flap-edge-gold::after {
-  content: '';
+/* Inner Face: Visible once flap folds 180deg backward */
+.flap-face-inner {
   position: absolute;
-  top: 0;
-  width: 53%;
-  height: 1.5px;
-  background: var(--gradient-gold);
+  inset: 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: linear-gradient(0deg, #dfcfb8 0%, #ede3ce 100%);
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
 }
 
-.flap-edge-gold::before {
-  left: 0;
-  transform-origin: top left;
-  transform: rotate(34deg);
+.flap-inner-gold-silk {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(212, 175, 55, 0.3),
+    rgba(212, 175, 55, 0.3) 1px,
+    transparent 1px,
+    transparent 12px
+  );
+  opacity: 0.45;
 }
 
-.flap-edge-gold::after {
-  right: 0;
-  transform-origin: top right;
-  transform: rotate(-34deg);
-}
-
-/* --- Layer 5: Golden Wax Seal with "P & S" Monogram --- */
+/* --- Realistic 24K Gold Wax Seal Stamp --- */
 .wax-seal-wrapper {
   position: absolute;
-  top: calc(var(--env-flap-h) - 4px);
+  top: 48%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 12;
-  transition: opacity 0.35s var(--ease-cinematic), transform 0.35s var(--ease-cinematic);
+  transition: opacity 0.35s var(--ease-cinematic), transform 0.4s var(--ease-cinematic);
 }
 
 .wax-seal-wrapper.releasing-seal {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(1.25) rotate(15deg);
+  transform: translate(-50%, -50%) scale(1.35) rotate(16deg);
   pointer-events: none;
   visibility: hidden;
 }
 
 .wax-seal-btn {
-  width: clamp(56px, 14vw, 68px);
-  height: clamp(56px, 14vw, 68px);
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 35% 30%,
-    #fef0a5 0%,
-    #d4af37 40%,
-    #9c7616 80%,
-    #694e0b 100%
-  );
-  box-shadow: 
-    0 6px 16px rgba(0, 0, 0, 0.65),
-    0 0 25px rgba(212, 175, 55, 0.5),
-    inset 0 2px 4px rgba(255, 255, 255, 0.7),
-    inset 0 -3px 5px rgba(0, 0, 0, 0.5);
+  position: relative;
+  width: clamp(88px, 24vw, 104px);
+  height: clamp(88px, 24vw, 104px);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-  animation: sealBreathing 3s ease-in-out infinite;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #bf9228;
+  box-shadow: 
+    0 12px 28px rgba(0, 0, 0, 0.65),
+    0 0 24px rgba(212, 175, 55, 0.5),
+    inset 0 2px 5px rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: sealBreathing 3.6s ease-in-out infinite;
+  padding: 0;
 }
 
 .wax-seal-btn:hover,
 .wax-seal-btn:focus-visible {
   transform: scale(1.08);
-  box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.7),
-    0 0 35px rgba(212, 175, 55, 0.8),
-    inset 0 2px 5px rgba(255, 255, 255, 0.8);
 }
 
 @keyframes sealBreathing {
   0%, 100% {
-    box-shadow: 
-      0 6px 16px rgba(0, 0, 0, 0.65),
-      0 0 20px rgba(212, 175, 55, 0.4),
-      inset 0 2px 4px rgba(255, 255, 255, 0.7);
+    transform: scale(1);
   }
   50% {
-    box-shadow: 
-      0 6px 20px rgba(0, 0, 0, 0.7),
-      0 0 32px rgba(212, 175, 55, 0.75),
-      inset 0 2px 6px rgba(255, 255, 255, 0.85);
+    transform: scale(1.04);
   }
 }
 
-.seal-rim-beads {
-  position: absolute;
-  inset: 4px;
-  border: 1.5px dashed rgba(255, 250, 210, 0.65);
-  border-radius: 50%;
+.wax-seal-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.68);
   pointer-events: none;
 }
 
-.seal-inner-circle {
-  width: clamp(38px, 10vw, 46px);
-  height: clamp(38px, 10vw, 46px);
-  border-radius: 50%;
-  border: 1px solid rgba(255, 245, 180, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.45);
-}
-
-.seal-monogram {
-  font-family: var(--font-serif);
-  font-size: clamp(0.72rem, 2vw, 0.85rem);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #3b030d;
-  text-shadow: 0 1px 2px rgba(255, 245, 180, 0.6);
-}
-
-/* --- Reduced Motion Overrides --- */
+/* --- Reduced Motion Mode Overrides --- */
 @media (prefers-reduced-motion: reduce) {
-  .envelope-wrapper.idle-state {
-    animation: none;
-  }
-  .scene-watermark {
+  .mobile-envelope-container.is-idle {
     animation: none;
   }
   .wax-seal-btn {
     animation: none;
   }
-  .light-rays-burst.active-burst {
+  .spokes-layer-1,
+  .spokes-layer-2 {
+    animation: none;
+  }
+  .sunlight-burst.active-burst {
     animation: none;
     transition: opacity 0.2s ease;
   }
-  .envelope-wrapper.is-opening .envelope-flap-container,
-  .envelope-wrapper.is-dissolving .envelope-flap-container {
+  .mobile-envelope-container.is-opening .envelope-flap-3d-wrapper,
+  .mobile-envelope-container.is-dissolving .envelope-flap-3d-wrapper {
     transform: rotateX(180deg) translateZ(-4px);
     transition: none;
   }
   .wax-seal-wrapper.releasing-seal {
     transition: opacity 0.15s ease;
   }
-  .envelope-wrapper.is-dissolving {
+  .mobile-envelope-container.is-dissolving {
     transition: opacity 0.2s ease;
   }
 }

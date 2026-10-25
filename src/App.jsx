@@ -5,9 +5,11 @@ import Particles from './components/Particles/Particles'
 
 /**
  * App.jsx — Wedding Invitation Experience for Prachi & Sumit
- * Two-Screen Architecture:
- * - Screen 1: 3D Royal Envelope Opening Ceremony with Sunlight Rays
- * - Screen 2: Full Scrollable Luxury Mobile Invitation Card Frame
+ * Mobile-First Architecture:
+ * - The entire mobile screen looks like a physical luxury envelope
+ * - Centered on mobile and desktop, covering the full mobile screen
+ * - Screen 1: 3D Royal Vertical Envelope Opening with Sunlight Rays
+ * - Screen 2: Full Scrollable Luxury Cream Invitation Card
  */
 function App() {
   const [currentView, setCurrentView] = useState('envelope') // 'envelope' | 'invitation'
@@ -27,23 +29,26 @@ function App() {
   }, [])
 
   return (
-    <>
+    <div className="app-viewport-root">
       {/* Golden Ambient and Burst Particles */}
       <Particles triggerBurst={isBursting} />
 
-      {/* Screen 1: The Royal Opening Envelope Ceremony */}
-      {currentView === 'envelope' && (
-        <Envelope
-          onOpenComplete={handleOpenComplete}
-          onBurstChange={handleBurstChange}
-        />
-      )}
+      {/* Centered Mobile Envelope & Card Stage */}
+      <div className="app-mobile-stage">
+        {/* Screen 1: The Royal Opening Envelope Ceremony */}
+        {currentView === 'envelope' && (
+          <Envelope
+            onOpenComplete={handleOpenComplete}
+            onBurstChange={handleBurstChange}
+          />
+        )}
 
-      {/* Screen 2: Full Scrollable Luxury Wedding Invitation Page */}
-      {currentView === 'invitation' && (
-        <InvitationCard onReplay={handleReplay} />
-      )}
-    </>
+        {/* Screen 2: Full Scrollable Luxury Wedding Invitation Page */}
+        {currentView === 'invitation' && (
+          <InvitationCard onReplay={handleReplay} />
+        )}
+      </div>
+    </div>
   )
 }
 

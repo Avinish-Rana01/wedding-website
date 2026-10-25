@@ -1,52 +1,84 @@
 /* ==========================================================================
    Royal Indian Luxury Design System — Prachi & Sumit Wedding
+   Cream & 24K Gold Luxury Stationery Theme (Mobile-First Focus)
    ========================================================================== */
 
 :root {
-  /* --- Heritage Velvet & Crimson Spectrum --- */
-  --color-royal-crimson: #5c0618;
-  --color-burgundy-deep: #38030e;
-  --color-night-maroon: #1c0106;
-  --color-maroon-glow: rgba(92, 6, 24, 0.4);
+  /* --- Luxury Cream & Ivory Stationery Palette --- */
+  --color-cream-pure: #ffffff;
+  --color-cream-base: #fdfbf7;
+  --color-cream-paper: #faf6ed;
+  --color-cream-envelope: #f6efe1;
+  --color-cream-envelope-shade: #ece0cd;
+  --color-cream-envelope-dark: #dfcfb8;
+  --color-cream-lining: #f3e9d8;
+  --color-cream-border: #d8c4a4;
+  --color-cream-border-subtle: #e8dccb;
 
-  /* --- 24K Metallic Gold Spectrum --- */
-  --color-gold-light: #fbeea4;
+  /* --- 24K Metallic Gold & Leaf Spectrum --- */
+  --color-gold-light: #fef1b8;
   --color-gold-primary: #d4af37;
-  --color-gold-rich: #c59b27;
-  --color-gold-dark: #8c6d1a;
-  --color-gold-muted: rgba(212, 175, 55, 0.35);
+  --color-gold-rich: #bd9027;
+  --color-gold-dark: #7a5a14;
+  --color-gold-burnished: #573e0a;
+  --color-gold-glow: rgba(212, 175, 55, 0.4);
+  --color-gold-sheen: rgba(254, 241, 184, 0.65);
 
-  --gradient-gold: linear-gradient(135deg, #fbeea4 0%, #d4af37 50%, #aa820a 100%);
+  /* --- Gradients --- */
+  --gradient-gold: linear-gradient(135deg, #fdf1b8 0%, #d4af37 50%, #9e7518 100%);
   --gradient-gold-foil: linear-gradient(
     45deg,
-    #c59b27 0%,
-    #fbeea4 25%,
+    #bd9027 0%,
+    #fef1b8 25%,
     #d4af37 50%,
-    #fef3c7 75%,
-    #aa820a 100%
+    #fff7d4 75%,
+    #9e7518 100%
   );
-  --gradient-royal-bg: radial-gradient(
-    ellipse at center,
-    #4a0614 0%,
-    #30030c 45%,
-    #170105 100%
+  --gradient-gold-text: linear-gradient(
+    135deg,
+    #82580c 0%,
+    #ba8e26 25%,
+    #fbeea4 50%,
+    #ba8e26 75%,
+    #694406 100%
+  );
+  --gradient-cream-card: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #fdfbf7 35%,
+    #f8f3e7 100%
+  );
+  --gradient-stage-bg: radial-gradient(
+    ellipse at 50% 50%,
+    #211510 0%,
+    #150d09 50%,
+    #0c0705 100%
   );
 
-  /* --- Parchment & Ivory Stationery Tones --- */
-  --color-paper-light: #fffefa;
-  --color-paper-warm: #faf5eb;
-  --color-paper-border: #e6d7bc;
-  --color-paper-gold-rim: #d9bf84;
-  --color-text-dark: #27170f;
-  --color-text-muted: #6b5a50;
-  --color-text-light: #fdf8ed;
-  --color-text-gold: #edd27b;
+  /* --- Typography Inks --- */
+  --color-ink-primary: #23160e;
+  --color-ink-secondary: #574438;
+  --color-ink-muted: #826e61;
+  --color-ink-accent: #91271e;
+  --color-text-on-dark: #fbf4e6;
 
-  /* --- Shadows & Glows --- */
-  --shadow-envelope: 0 25px 60px rgba(0, 0, 0, 0.75), 0 10px 25px rgba(0, 0, 0, 0.5);
-  --shadow-card: 0 15px 40px rgba(23, 1, 5, 0.35), 0 5px 15px rgba(212, 175, 55, 0.15);
-  --glow-gold: 0 0 25px rgba(212, 175, 55, 0.5), 0 0 60px rgba(212, 175, 55, 0.25);
-  --glow-seal: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.45);
+  /* --- Event Palette Accents --- */
+  --color-haldi-accent: #d97706;
+  --color-mehendi-accent: #15803d;
+  --color-sangeet-accent: #7e22ce;
+  --color-wedding-accent: #b91c1c;
+  --color-reception-accent: #1e3a8a;
+
+  /* --- Shadows & Atmospheric Glows --- */
+  --shadow-envelope: 
+    0 24px 64px rgba(0, 0, 0, 0.6),
+    0 10px 24px rgba(0, 0, 0, 0.4),
+    0 0 35px rgba(212, 175, 55, 0.15);
+  --shadow-card: 
+    0 25px 70px rgba(0, 0, 0, 0.55),
+    0 10px 25px rgba(23, 14, 9, 0.3),
+    0 0 40px rgba(212, 175, 55, 0.2);
+  --glow-sunlight: 0 0 90px rgba(255, 235, 140, 0.85);
 
   /* --- Typography Families --- */
   --font-display: 'Cinzel Decorative', 'Playfair Display', Georgia, serif;
@@ -72,10 +104,10 @@ html,
 body {
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
-  background-color: var(--color-night-maroon);
-  background: var(--gradient-royal-bg);
-  color: var(--color-text-light);
+  overflow: hidden;
+  background-color: #0c0705;
+  background: var(--gradient-stage-bg);
+  color: var(--color-ink-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -84,12 +116,60 @@ body {
 
 #root {
   width: 100%;
+  height: 100%;
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
   overflow: hidden;
+}
+
+.app-viewport-root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Centered Mobile Canvas Stage */
+.app-mobile-stage {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #faf6ed;
+}
+
+@media (min-width: 441px) {
+  .app-mobile-stage {
+    max-height: 880px;
+    height: min(94vh, 880px);
+    border-radius: 18px;
+    box-shadow: 
+      0 20px 60px rgba(0, 0, 0, 0.8),
+      0 0 40px rgba(212, 175, 55, 0.25);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+  }
+}
+
+@media (max-width: 440px) {
+  .app-mobile-stage {
+    width: 100vw;
+    height: 100dvh;
+    max-width: 100%;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
 }
 
 /* Background Particle Canvas */
