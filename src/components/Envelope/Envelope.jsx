@@ -10,13 +10,11 @@ const STATUS = {
 
 /**
  * Envelope.jsx — Screen 1: Mobile-First Realistic Luxury Cream Envelope
- * Inspired directly by luxury wedding stationery references:
- * - Covers the mobile viewport completely ("the mobile should look like an envelope")
- * - Authentic blind-embossed floral paper texture
- * - Precision 3D V-flap fold with gold border trim
- * - 24K gold wax seal stamp with "P & S" and laurel wreath
- * - Volumetric golden sunlight rays bursting from inside upon tap
- * - Seamless dissolve into Screen 2
+ * Features:
+ * - Photorealistic embossed cotton paper flap image with gold border & floral relief
+ * - 24K gold wax seal stamp with "P & S" monogram & laurel wreath
+ * - Cinematic volumetric god rays / sunlight burst engine
+ * - Full-screen mobile envelope immersion
  */
 export default function Envelope({ onOpenComplete, onBurstChange }) {
   const [status, setStatus] = useState(STATUS.CLOSED)
@@ -53,27 +51,27 @@ export default function Envelope({ onOpenComplete, onBurstChange }) {
     if (isActionPendingRef.current || status !== STATUS.CLOSED) return
     isActionPendingRef.current = true
 
-    // Step 1: Seal breaks & flap begins folding backward in 3D (0ms)
+    // Step 1: Seal breaks & flap folds backward in 3D (0ms)
     setStatus(STATUS.OPENING)
 
-    // Step 2: Intense volumetric golden sunlight rays burst from the cavity (260ms)
+    // Step 2: Intense cinematic volumetric sunlight rays burst from the cavity (250ms)
     safeTimeout(() => {
       setIsBursting(true)
       if (onBurstChange) onBurstChange(true)
-    }, 260)
+    }, 250)
 
-    // Step 3: Envelope dissolves into the golden sunlight (680ms)
+    // Step 3: Envelope dissolves into the golden sunlight bloom (1100ms)
     safeTimeout(() => {
       setStatus(STATUS.DISSOLVING)
-    }, 680)
+    }, 1100)
 
-    // Step 4: Complete transition to Screen 2 (1050ms)
+    // Step 4: Complete transition to Screen 2 (1550ms)
     safeTimeout(() => {
       setIsBursting(false)
       isActionPendingRef.current = false
       if (onBurstChange) onBurstChange(false)
       if (onOpenComplete) onOpenComplete()
-    }, 1050)
+    }, 1550)
   }, [status, onOpenComplete, onBurstChange, safeTimeout])
 
   const handleEnvelopeClick = (e) => {
@@ -101,7 +99,7 @@ export default function Envelope({ onOpenComplete, onBurstChange }) {
         <div className="frame-corner frame-br" />
       </div>
 
-      {/* Background Interior Back Plate with Gold Lattice Lining */}
+      {/* Background Interior Back Cavity with Gold Lattice Lining */}
       <div className="envelope-cavity-back" aria-hidden="true">
         <div className="cavity-gold-lining" />
         <div className="cavity-card-peek">
@@ -110,26 +108,12 @@ export default function Envelope({ onOpenComplete, onBurstChange }) {
         </div>
       </div>
 
-      {/* Volumetric Sunlight Rays Burst Engine */}
+      {/* Cinematic Volumetric Sunlight Rays Burst Engine */}
       <div className={`sunlight-burst ${isBursting ? 'active-burst' : ''}`} aria-hidden="true">
-        <div className="sunlight-core-glow" />
-        <div className="sunlight-central-flare" />
-        <div className="rays-spokes spokes-layer-1">
-          <div className="ray-beam r-1" />
-          <div className="ray-beam r-2" />
-          <div className="ray-beam r-3" />
-          <div className="ray-beam r-4" />
-          <div className="ray-beam r-5" />
-          <div className="ray-beam r-6" />
-        </div>
-        <div className="rays-spokes spokes-layer-2">
-          <div className="ray-beam r-7" />
-          <div className="ray-beam r-8" />
-          <div className="ray-beam r-9" />
-          <div className="ray-beam r-10" />
-          <div className="ray-beam r-11" />
-          <div className="ray-beam r-12" />
-        </div>
+        <div className="sunlight-ambient-flash" />
+        <div className="sunlight-photo-flare flare-layer-1" />
+        <div className="sunlight-photo-flare flare-layer-2" />
+        <div className="sunlight-core-hotspot" />
       </div>
 
       {/* Lower Envelope Pocket (Embossed Paper Body with Invitation Text) */}
@@ -148,25 +132,18 @@ export default function Envelope({ onOpenComplete, onBurstChange }) {
         </div>
       </div>
 
-      {/* Top V-Flap (Folds in 3D perspective from top edge) */}
+      {/* Top Triangular Flap (Photographic Embossed Flap with 3D Fold) */}
       <div className="envelope-flap-3d-wrapper" aria-hidden="true">
-        {/* Outer Face (Embossed texture pointing down) */}
+        {/* Outer Face: Realistic Embossed Flap Image */}
         <div className="flap-face-outer">
-          <div className="flap-texture" />
-          {/* Triangular Gold Foil Edge Borders */}
-          <svg className="flap-border-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <line x1="0" y1="0" x2="50" y2="100" stroke="url(#goldGrad)" strokeWidth="1.8" />
-            <line x1="100" y1="0" x2="50" y2="100" stroke="url(#goldGrad)" strokeWidth="1.8" />
-            <defs>
-              <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#fdf1b8" />
-                <stop offset="50%" stopColor="#d4af37" />
-                <stop offset="100%" stopColor="#9e7518" />
-              </linearGradient>
-            </defs>
-          </svg>
+          <img
+            src="/envelope-flap.png"
+            alt="Embossed Luxury Wedding Flap"
+            className="flap-photo-image"
+            draggable="false"
+          />
         </div>
-        {/* Inner Face (Gold lining visible once folded 180deg backward) */}
+        {/* Inner Face: Gold silk lining visible once folded 180deg backward */}
         <div className="flap-face-inner">
           <div className="flap-inner-gold-silk" />
         </div>
